@@ -1,0 +1,46 @@
+name: hcmus-cart-mgmt
+
+services:
+  mongo:
+    image: mongo:7
+    container_name: hcmus-cart-mgmt-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  redis:
+    image: redis:7
+    container_name: hcmus-cart-mgmt-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  cassandra:
+    image: cassandra:4.1
+    container_name: hcmus-cart-mgmt-cassandra
+    ports:
+      - "9042:9042"
+    environment:
+      - CASSANDRA_CLUSTER_NAME=hcmus-cart-mgmt
+      - CASSANDRA_DC=datacenter1
+    volumes:
+      - cassandra_data:/var/lib/cassandra
+
+  neo4j:
+    image: neo4j:5
+    container_name: hcmus-cart-mgmt-neo4j
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    environment:
+      - NEO4J_AUTH=neo4j/neo4j_password
+    volumes:
+      - neo4j_data:/data
+
+volumes:
+  mongo_data:
+  redis_data:
+  cassandra_data:
+  neo4j_data:
